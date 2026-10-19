@@ -18,6 +18,14 @@ class AppNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final fallback = ColoredBox(
+      color: scheme.surfaceContainerHighest,
+      child: Icon(
+        Icons.image_not_supported_outlined,
+        color: scheme.onSurfaceVariant,
+      ),
+    );
+    if (url.isEmpty) return fallback;
     return Semantics(
       image: true,
       label: semanticLabel,
@@ -26,13 +34,7 @@ class AppNetworkImage extends StatelessWidget {
         fit: fit,
         fadeInDuration: const Duration(milliseconds: 250),
         placeholder: (_, _) => const ShimmerBox(),
-        errorWidget: (_, _, _) => ColoredBox(
-          color: scheme.surfaceContainerHighest,
-          child: Icon(
-            Icons.image_not_supported_outlined,
-            color: scheme.onSurfaceVariant,
-          ),
-        ),
+        errorWidget: (_, _, _) => fallback,
       ),
     );
   }
