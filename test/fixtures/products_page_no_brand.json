@@ -1,0 +1,17 @@
+{
+ "products": [
+  {
+   "id": 16,
+   "title": "Apple",
+   "price": 1.99,
+   "discountPercentage": 12.62,
+   "rating": 4.19,
+   "thumbnail": "https://cdn.dummyjson.com/product-images/groceries/apple/thumbnail.webp",
+   "stock": 8,
+   "category": "groceries"
+  }
+ ],
+ "total": 27,
+ "skip": 0,
+ "limit": 1
+}

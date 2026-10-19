@@ -1,0 +1,20 @@
+{
+ "id": 209,
+ "products": [
+  {
+   "id": 144,
+   "title": "Cricket Helmet",
+   "price": 44.99,
+   "quantity": 2,
+   "total": 89.98,
+   "discountPercentage": 9.64,
+   "discountedPrice": 81,
+   "thumbnail": "https://cdn.dummyjson.com/product-images/sports-accessories/cricket-helmet/thumbnail.webp"
+  }
+ ],
+ "total": 89.98,
+ "discountedTotal": 81,
+ "userId": 1,
+ "totalProducts": 1,
+ "totalQuantity": 2
+}
