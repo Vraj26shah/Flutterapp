@@ -58,3 +58,6 @@ android/local.properties
 *.apk
 *.aab
 .vscode/
+
+# Downloaded Gradle distribution
+/android/gradle-8.14-bin.zip
