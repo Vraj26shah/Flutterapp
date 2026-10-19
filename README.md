@@ -300,4 +300,4 @@ _Describe honestly how you used AI assistants (the brief requires this), e.g. wh
 
 ## 13. Author
 
-**<Your full name>** · <email> · [LinkedIn](https://linkedin.com/in/<handle>) · [Portfolio](https://<site>)
+**<Vraj shah>** · <email> · [LinkedIn](https://linkedin.com/in/vraj1) · [Portfolio](https://vrajshahportfolio.vercel.app/)

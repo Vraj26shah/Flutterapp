@@ -39,8 +39,17 @@ AppException _fromStatus(int? status, String? message) => switch (status) {
 };
 
 String? _messageOf(Object? data) {
-  if (data is Map && data['message'] is String) {
-    return data['message'] as String;
+  if (data is Map) {
+    // DummyJSON and most REST APIs may return errors under 'message', 'error', or 'msg'
+    if (data['message'] is String) {
+      return data['message'] as String;
+    }
+    if (data['error'] is String) {
+      return data['error'] as String;
+    }
+    if (data['msg'] is String) {
+      return data['msg'] as String;
+    }
   }
   return null;
 }
