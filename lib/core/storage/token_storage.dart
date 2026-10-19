@@ -8,6 +8,8 @@ abstract interface class TokenStorage {
     required String accessToken,
     required String refreshToken,
   });
+  Future<void> saveUserId(int id);
+  Future<int?> readUserId();
   Future<void> clear();
 }
 
@@ -19,6 +21,7 @@ class SecureTokenStorage implements TokenStorage {
 
   static const _accessKey = 'access_token';
   static const _refreshKey = 'refresh_token';
+  static const _userIdKey = 'user_id';
 
   @override
   Future<String?> readAccessToken() => _storage.read(key: _accessKey);
@@ -36,8 +39,17 @@ class SecureTokenStorage implements TokenStorage {
   }
 
   @override
+  Future<void> saveUserId(int id) =>
+      _storage.write(key: _userIdKey, value: '$id');
+
+  @override
+  Future<int?> readUserId() async =>
+      int.tryParse(await _storage.read(key: _userIdKey) ?? '');
+
+  @override
   Future<void> clear() async {
     await _storage.delete(key: _accessKey);
     await _storage.delete(key: _refreshKey);
+    await _storage.delete(key: _userIdKey);
   }
 }
