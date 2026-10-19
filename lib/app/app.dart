@@ -48,13 +48,15 @@ class _AuthGate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      listenWhen: (p, c) => p.status != c.status,
+      // Only an active session ending (logout / expiry) wipes local data —
+      // not the cold-start check, so the cart survives an app restart.
+      listenWhen: (p, c) =>
+          p.status == AuthStatus.authenticated &&
+          c.status == AuthStatus.unauthenticated,
       listener: (context, state) {
-        if (state.status == AuthStatus.unauthenticated) {
-          // Close any pushed routes (details, dialogs) and wipe the cart.
-          _navigatorKey.currentState?.popUntil((r) => r.isFirst);
-          context.read<CartBloc>().add(const CartCleared());
-        }
+        // Close any pushed routes (details, dialogs) and wipe the cart.
+        _navigatorKey.currentState?.popUntil((r) => r.isFirst);
+        context.read<CartBloc>().add(const CartCleared());
       },
       builder: (context, state) => AnimatedSwitcher(
         duration: const Duration(milliseconds: 350),
