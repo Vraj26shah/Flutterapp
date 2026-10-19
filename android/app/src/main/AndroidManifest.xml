@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Required in release builds: DummyJSON API + product images. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- connectivity_plus: offline banner. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
-        android:label="shopsphere"
+        android:label="ShopSphere"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
