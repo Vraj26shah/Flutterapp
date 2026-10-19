@@ -5,9 +5,12 @@ import 'package:shopsphere/features/cart/domain/entities/cart.dart';
 
 /// Shown after `POST /carts/add` succeeds.
 class OrderSuccessPage extends StatelessWidget {
-  const OrderSuccessPage({required this.order, super.key});
+  const OrderSuccessPage({required this.order, required this.total, super.key});
 
   final OrderConfirmation order;
+
+  /// Grand total (after discount) as shown in the cart.
+  final double total;
 
   @override
   Widget build(BuildContext context) {
@@ -65,15 +68,11 @@ class OrderSuccessPage extends StatelessWidget {
                           _Line(
                             'Items',
                             '${order.totalQuantity} '
-                                '(${order.totalProducts} products)',
+                                '(${order.totalProducts} '
+                                '${order.totalProducts == 1 ? 'product' : 'products'})',
                           ),
-                          _Line('Before discount', formatPrice(order.total)),
                           const Divider(height: Spacing.xl),
-                          _Line(
-                            'Amount paid',
-                            formatPrice(order.discountedTotal),
-                            bold: true,
-                          ),
+                          _Line('Order total', formatPrice(total), bold: true),
                         ],
                       ),
                     ),

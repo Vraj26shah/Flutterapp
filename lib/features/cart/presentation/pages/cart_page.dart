@@ -26,7 +26,10 @@ class CartPage extends StatelessWidget {
           await Navigator.of(context).push(
             MaterialPageRoute<void>(
               fullscreenDialog: true,
-              builder: (_) => OrderSuccessPage(order: state.order!),
+              builder: (_) => OrderSuccessPage(
+                order: state.order!,
+                total: state.lastOrderTotal,
+              ),
             ),
           );
           bloc.add(const CartCheckoutAcknowledged());
@@ -265,7 +268,9 @@ class _Summary extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _Row(
-          label: 'Subtotal (${totals.itemCount} items)',
+          label:
+              'Subtotal (${totals.itemCount} '
+              '${totals.itemCount == 1 ? 'item' : 'items'})',
           value: formatPrice(totals.subtotal),
         ),
         const SizedBox(height: Spacing.xs),

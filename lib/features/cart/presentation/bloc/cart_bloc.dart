@@ -71,6 +71,7 @@ final class CartState extends Equatable {
     this.isLoaded = false,
     this.checkoutStatus = CheckoutStatus.idle,
     this.order,
+    this.lastOrderTotal = 0,
     this.failure,
   });
 
@@ -79,6 +80,10 @@ final class CartState extends Equatable {
   final bool isLoaded;
   final CheckoutStatus checkoutStatus;
   final OrderConfirmation? order;
+
+  /// Grand total the user saw when placing the last order. DummyJSON rounds
+  /// its own `discountedTotal`, so we show the client-side figure.
+  final double lastOrderTotal;
   final Failure? failure;
 
   bool get isEmpty => items.isEmpty;
@@ -93,6 +98,7 @@ final class CartState extends Equatable {
     bool? isLoaded,
     CheckoutStatus? checkoutStatus,
     OrderConfirmation? Function()? order,
+    double? lastOrderTotal,
     Failure? Function()? failure,
   }) => CartState(
     items: items ?? this.items,
@@ -100,6 +106,7 @@ final class CartState extends Equatable {
     isLoaded: isLoaded ?? this.isLoaded,
     checkoutStatus: checkoutStatus ?? this.checkoutStatus,
     order: order != null ? order() : this.order,
+    lastOrderTotal: lastOrderTotal ?? this.lastOrderTotal,
     failure: failure != null ? failure() : this.failure,
   );
 
@@ -110,6 +117,7 @@ final class CartState extends Equatable {
     isLoaded,
     checkoutStatus,
     order,
+    lastOrderTotal,
     failure,
   ];
 }
@@ -223,6 +231,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             totals: const CartTotals.empty(),
             checkoutStatus: CheckoutStatus.success,
             order: () => data,
+            lastOrderTotal: state.totals.total,
           ),
         );
       case Err(:final failure):
