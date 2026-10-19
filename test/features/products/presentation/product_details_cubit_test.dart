@@ -28,9 +28,9 @@ void main() {
 
   blocTest<ProductDetailsCubit, ProductDetailsState>(
     'emits [loading, failure(NotFound)] for /products/9999',
-    setUp: () => when(
-      () => getDetails(9999),
-    ).thenAnswer((_) async => const Err(NotFoundFailure())),
+    setUp: () =>
+        when(() => getDetails(9999))
+            .thenAnswer((_) async => const Err(NotFoundFailure())),
     build: () => ProductDetailsCubit(getDetails),
     act: (cubit) => cubit.load(9999),
     expect: () => const [

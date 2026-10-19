@@ -43,9 +43,8 @@ void main() {
   });
 
   testWidgets('shows the API message for invalid credentials', (tester) async {
-    when(
-      () => login(any()),
-    ).thenAnswer((_) async => const Err(InvalidCredentialsFailure()));
+    when(() => login(any()))
+        .thenAnswer((_) async => const Err(InvalidCredentialsFailure()));
     await pump(tester);
 
     await tester.enterText(find.byType(TextFormField).at(0), 'emilys');

@@ -32,16 +32,14 @@ void main() {
     searchProducts = MockSearchProductsUseCase();
   });
 
-  ProductListBloc build() => ProductListBloc(
-    getProducts: getProducts,
-    searchProducts: searchProducts,
-  );
+  ProductListBloc build() =>
+      ProductListBloc(getProducts: getProducts, searchProducts: searchProducts);
 
   blocTest<ProductListBloc, ProductListState>(
     'emits [loading, success] on first fetch',
-    setUp: () => when(
-      () => getProducts(any()),
-    ).thenAnswer((_) async => Ok(pageOf(0, 20, 194))),
+    setUp: () =>
+        when(() => getProducts(any()))
+            .thenAnswer((_) async => Ok(pageOf(0, 20, 194))),
     build: build,
     act: (bloc) => bloc.add(const ProductsFetched()),
     expect: () => [
@@ -59,9 +57,9 @@ void main() {
 
   blocTest<ProductListBloc, ProductListState>(
     'emits [loading, failure] when the first page fails',
-    setUp: () => when(
-      () => getProducts(any()),
-    ).thenAnswer((_) async => const Err(ServerFailure())),
+    setUp: () =>
+        when(() => getProducts(any()))
+            .thenAnswer((_) async => const Err(ServerFailure())),
     build: build,
     act: (bloc) => bloc.add(const ProductsFetched()),
     expect: () => [
@@ -79,12 +77,10 @@ void main() {
   blocTest<ProductListBloc, ProductListState>(
     'loads the next page with skip = current length and appends it',
     setUp: () {
-      when(
-        () => getProducts(const ProductQuery()),
-      ).thenAnswer((_) async => Ok(pageOf(0, 20, 30)));
-      when(
-        () => getProducts(const ProductQuery(skip: 20)),
-      ).thenAnswer((_) async => Ok(pageOf(20, 10, 30)));
+      when(() => getProducts(const ProductQuery()))
+          .thenAnswer((_) async => Ok(pageOf(0, 20, 30)));
+      when(() => getProducts(const ProductQuery(skip: 20)))
+          .thenAnswer((_) async => Ok(pageOf(20, 10, 30)));
     },
     build: build,
     act: (bloc) async {
@@ -105,12 +101,10 @@ void main() {
   blocTest<ProductListBloc, ProductListState>(
     'a failed next page keeps the list and exposes loadMoreFailure',
     setUp: () {
-      when(
-        () => getProducts(const ProductQuery()),
-      ).thenAnswer((_) async => Ok(pageOf(0, 20, 30)));
-      when(
-        () => getProducts(const ProductQuery(skip: 20)),
-      ).thenAnswer((_) async => const Err(NetworkFailure()));
+      when(() => getProducts(const ProductQuery()))
+          .thenAnswer((_) async => Ok(pageOf(0, 20, 30)));
+      when(() => getProducts(const ProductQuery(skip: 20)))
+          .thenAnswer((_) async => const Err(NetworkFailure()));
     },
     build: build,
     act: (bloc) async {
@@ -135,11 +129,7 @@ void main() {
     build: build,
     act: (bloc) => bloc.add(const ProductsSearchChanged('zzzqqq')),
     expect: () => [
-      isA<ProductListState>().having(
-        (s) => s.query.search,
-        'search',
-        'zzzqqq',
-      ),
+      isA<ProductListState>().having((s) => s.query.search, 'search', 'zzzqqq'),
       isA<ProductListState>().having(
         (s) => s.status,
         'status',
@@ -151,32 +141,30 @@ void main() {
 
   blocTest<ProductListBloc, ProductListState>(
     'selecting a category clears the search and resets pagination',
-    setUp: () => when(
-      () => getProducts(any()),
-    ).thenAnswer((_) async => Ok(pageOf(0, 5, 5))),
+    setUp: () =>
+        when(() => getProducts(any()))
+            .thenAnswer((_) async => Ok(pageOf(0, 5, 5))),
     build: build,
     seed: () => const ProductListState(
       status: ProductListStatus.success,
       query: ProductQuery(search: 'phone', skip: 40),
     ),
     act: (bloc) => bloc.add(const ProductsCategorySelected('smartphones')),
-    verify: (_) => verify(
-      () => getProducts(const ProductQuery(category: 'smartphones')),
-    ).called(1),
+    verify: (_) =>
+        verify(() => getProducts(const ProductQuery(category: 'smartphones')))
+            .called(1),
   );
 
   blocTest<ProductListBloc, ProductListState>(
     'drops a stale response when a newer search was issued',
     setUp: () {
-      when(
-        () => searchProducts(const ProductQuery(search: 'ph')),
-      ).thenAnswer((_) async {
-        await Future<void>.delayed(const Duration(milliseconds: 50));
-        return Ok(pageOf(0, 3, 3));
-      });
-      when(
-        () => searchProducts(const ProductQuery(search: 'phone')),
-      ).thenAnswer((_) async => Ok(pageOf(100, 1, 1)));
+      when(() => searchProducts(const ProductQuery(search: 'ph')))
+          .thenAnswer((_) async {
+            await Future<void>.delayed(const Duration(milliseconds: 50));
+            return Ok(pageOf(0, 3, 3));
+          });
+      when(() => searchProducts(const ProductQuery(search: 'phone')))
+          .thenAnswer((_) async => Ok(pageOf(100, 1, 1)));
     },
     build: build,
     act: (bloc) async {

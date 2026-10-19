@@ -24,13 +24,12 @@ void main() {
   setUp(() => repository = MockAuthRepository());
 
   test('LoginUseCase trims the username before calling the API', () async {
-    when(
-      () => repository.login(username: 'emilys', password: 'emilyspass'),
-    ).thenAnswer((_) async => const Ok(user));
+    when(() => repository.login(username: 'emilys', password: 'emilyspass'))
+        .thenAnswer((_) async => const Ok(user));
 
-    final result = await LoginUseCase(
-      repository,
-    )(const LoginParams(username: '  emilys ', password: 'emilyspass'));
+    final result = await LoginUseCase(repository)(
+      const LoginParams(username: '  emilys ', password: 'emilyspass'),
+    );
 
     expect((result as Ok<User>).data, user);
   });
@@ -43,9 +42,9 @@ void main() {
       ),
     ).thenAnswer((_) async => const Err(InvalidCredentialsFailure()));
 
-    final result = await LoginUseCase(
-      repository,
-    )(const LoginParams(username: 'emilys', password: 'wrongpass'));
+    final result = await LoginUseCase(repository)(
+      const LoginParams(username: 'emilys', password: 'wrongpass'),
+    );
 
     expect((result as Err).failure, isA<InvalidCredentialsFailure>());
   });

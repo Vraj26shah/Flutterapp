@@ -39,9 +39,9 @@ void main() {
   group('AuthBloc', () {
     blocTest<AuthBloc, AuthState>(
       'routes to Home when a session is stored',
-      setUp: () => when(
-        () => checkSession(any()),
-      ).thenAnswer((_) async => const Ok(true)),
+      setUp: () =>
+          when(() => checkSession(any()))
+              .thenAnswer((_) async => const Ok(true)),
       build: build,
       act: (bloc) => bloc.add(const AuthCheckRequested()),
       expect: () => [const AuthState.authenticated()],
@@ -49,9 +49,9 @@ void main() {
 
     blocTest<AuthBloc, AuthState>(
       'routes to Login when there is no session',
-      setUp: () => when(
-        () => checkSession(any()),
-      ).thenAnswer((_) async => const Ok(false)),
+      setUp: () =>
+          when(() => checkSession(any()))
+              .thenAnswer((_) async => const Ok(false)),
       build: build,
       act: (bloc) => bloc.add(const AuthCheckRequested()),
       expect: () => [const AuthState.unauthenticated()],
@@ -110,9 +110,9 @@ void main() {
 
     blocTest<LoginCubit, LoginState>(
       'emits [submitting, failure] on invalid credentials',
-      setUp: () => when(
-        () => login(any()),
-      ).thenAnswer((_) async => const Err(InvalidCredentialsFailure())),
+      setUp: () =>
+          when(() => login(any()))
+              .thenAnswer((_) async => const Err(InvalidCredentialsFailure())),
       build: () => LoginCubit(login),
       act: (cubit) => cubit.submit(username: 'emilys', password: 'nope123'),
       expect: () => const [

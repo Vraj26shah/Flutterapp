@@ -35,9 +35,8 @@ void main() {
       repository.login(username: 'emilys', password: 'emilyspass');
 
   test('login stores tokens and user id, returns the user', () async {
-    when(
-      () => remote.login(username: 'emilys', password: 'emilyspass'),
-    ).thenAnswer((_) async => response);
+    when(() => remote.login(username: 'emilys', password: 'emilyspass'))
+        .thenAnswer((_) async => response);
 
     final result = await login();
 
@@ -51,27 +50,30 @@ void main() {
     verify(() => tokens.saveUserId(1)).called(1);
   });
 
-  test('HTTP 400 becomes InvalidCredentialsFailure and stores nothing', () async {
-    when(
-      () => remote.login(
-        username: any(named: 'username'),
-        password: any(named: 'password'),
-      ),
-    ).thenThrow(const BadRequestException('Invalid credentials'));
+  test(
+    'HTTP 400 becomes InvalidCredentialsFailure and stores nothing',
+    () async {
+      when(
+        () => remote.login(
+          username: any(named: 'username'),
+          password: any(named: 'password'),
+        ),
+      ).thenThrow(const BadRequestException('Invalid credentials'));
 
-    final result = await login();
+      final result = await login();
 
-    expect(
-      (result as Err).failure,
-      const InvalidCredentialsFailure('Invalid username or password'),
-    );
-    verifyNever(
-      () => tokens.saveTokens(
-        accessToken: any(named: 'accessToken'),
-        refreshToken: any(named: 'refreshToken'),
-      ),
-    );
-  });
+      expect(
+        (result as Err).failure,
+        const InvalidCredentialsFailure('Invalid username or password'),
+      );
+      verifyNever(
+        () => tokens.saveTokens(
+          accessToken: any(named: 'accessToken'),
+          refreshToken: any(named: 'refreshToken'),
+        ),
+      );
+    },
+  );
 
   test('no internet becomes NetworkFailure', () async {
     when(

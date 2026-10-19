@@ -76,9 +76,8 @@ void main() {
         totalQuantity: 1,
       );
       final items = [item()];
-      when(
-        () => repository.placeOrder(items),
-      ).thenAnswer((_) async => const Ok(order));
+      when(() => repository.placeOrder(items))
+          .thenAnswer((_) async => const Ok(order));
 
       expect(await placeOrder(items), isA<Ok<OrderConfirmation>>());
     });

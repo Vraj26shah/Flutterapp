@@ -52,9 +52,8 @@ void main() {
     });
 
     test('returns ServerFailure on a 5xx', () async {
-      when(
-        () => remote.getProducts(firstPage),
-      ).thenThrow(const ServerException(statusCode: 500));
+      when(() => remote.getProducts(firstPage))
+          .thenThrow(const ServerException(statusCode: 500));
 
       final result = await repository.getProducts(firstPage);
 
@@ -62,9 +61,8 @@ void main() {
     });
 
     test('falls back to the offline cache when there is no network', () async {
-      when(
-        () => remote.getProducts(firstPage),
-      ).thenThrow(const NetworkException());
+      when(() => remote.getProducts(firstPage))
+          .thenThrow(const NetworkException());
       when(() => local.getCachedFirstPage()).thenReturn(cached);
 
       final result = await repository.getProducts(firstPage);
@@ -73,9 +71,8 @@ void main() {
     });
 
     test('returns NetworkFailure offline when nothing is cached', () async {
-      when(
-        () => remote.getProducts(firstPage),
-      ).thenThrow(const NetworkException());
+      when(() => remote.getProducts(firstPage))
+          .thenThrow(const NetworkException());
       when(() => local.getCachedFirstPage()).thenReturn(null);
 
       final result = await repository.getProducts(firstPage);
@@ -85,9 +82,7 @@ void main() {
 
     test('a cache write error never breaks a successful request', () async {
       when(() => remote.getProducts(firstPage)).thenAnswer((_) async => page);
-      when(
-        () => local.cacheFirstPage(any()),
-      ).thenThrow(const CacheException());
+      when(() => local.cacheFirstPage(any())).thenThrow(const CacheException());
 
       final result = await repository.getProducts(firstPage);
 
@@ -97,9 +92,7 @@ void main() {
 
   group('getProduct', () {
     test('maps a 404 to NotFoundFailure', () async {
-      when(
-        () => remote.getProduct(9999),
-      ).thenThrow(const NotFoundException());
+      when(() => remote.getProduct(9999)).thenThrow(const NotFoundException());
 
       final result = await repository.getProduct(9999);
 
@@ -107,9 +100,8 @@ void main() {
     });
 
     test('maps a timeout to TimeoutFailure', () async {
-      when(
-        () => remote.getProduct(1),
-      ).thenThrow(const RequestTimeoutException());
+      when(() => remote.getProduct(1))
+          .thenThrow(const RequestTimeoutException());
 
       final result = await repository.getProduct(1);
 

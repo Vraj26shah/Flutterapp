@@ -49,9 +49,9 @@ void main() {
 
   blocTest<CartBloc, CartState>(
     'restores the persisted cart on start',
-    setUp: () => when(
-      () => loadCart(any()),
-    ).thenAnswer((_) async => Ok([helmet.copyWith(quantity: 2)])),
+    setUp: () =>
+        when(() => loadCart(any()))
+            .thenAnswer((_) async => Ok([helmet.copyWith(quantity: 2)])),
     build: build,
     act: (bloc) => bloc.add(const CartStarted()),
     expect: () => [
@@ -119,9 +119,9 @@ void main() {
 
   blocTest<CartBloc, CartState>(
     'failed checkout keeps the cart and exposes the failure',
-    setUp: () => when(
-      () => placeOrder(any()),
-    ).thenAnswer((_) async => const Err(NetworkFailure())),
+    setUp: () =>
+        when(() => placeOrder(any()))
+            .thenAnswer((_) async => const Err(NetworkFailure())),
     build: build,
     seed: () => const CartState(items: [helmet], isLoaded: true),
     act: (bloc) => bloc.add(const CartCheckoutRequested()),

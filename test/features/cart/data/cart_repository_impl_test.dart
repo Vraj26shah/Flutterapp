@@ -55,11 +55,11 @@ void main() {
 
   test('placeOrder posts the items for the signed-in user', () async {
     when(() => tokens.readUserId()).thenAnswer((_) async => 1);
-    when(
-      () => remote.addCart(userId: 1, items: any(named: 'items')),
-    ).thenAnswer(
-      (_) async => OrderConfirmationModel.fromJson(fixtureMap('cart_add.json')),
-    );
+    when(() => remote.addCart(userId: 1, items: any(named: 'items')))
+        .thenAnswer(
+          (_) async =>
+              OrderConfirmationModel.fromJson(fixtureMap('cart_add.json')),
+        );
 
     final result = await repository.placeOrder([item]);
 

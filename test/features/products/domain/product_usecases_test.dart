@@ -14,9 +14,8 @@ void main() {
 
   setUp(() {
     repository = MockProductRepository();
-    when(
-      () => repository.getProducts(any()),
-    ).thenAnswer((_) async => const Ok(page));
+    when(() => repository.getProducts(any()))
+        .thenAnswer((_) async => const Ok(page));
   });
 
   test('GetProductsUseCase forwards the query unchanged', () async {
@@ -28,13 +27,12 @@ void main() {
   });
 
   test('SearchProductsUseCase trims the term and drops the category', () async {
-    await SearchProductsUseCase(
-      repository,
-    )(const ProductQuery(search: '  phone ', category: 'beauty'));
+    await SearchProductsUseCase(repository)(
+      const ProductQuery(search: '  phone ', category: 'beauty'),
+    );
 
-    verify(
-      () => repository.getProducts(const ProductQuery(search: 'phone')),
-    ).called(1);
+    verify(() => repository.getProducts(const ProductQuery(search: 'phone')))
+        .called(1);
   });
 
   test('only the default first page is eligible for offline caching', () {

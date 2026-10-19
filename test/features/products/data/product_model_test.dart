@@ -6,9 +6,7 @@ import '../../../helpers/fixture_reader.dart';
 void main() {
   group('ProductModel.fromJson', () {
     test('parses a full product with images and reviews', () {
-      final product = ProductModel.fromJson(
-        fixtureMap('product_details.json'),
-      );
+      final product = ProductModel.fromJson(fixtureMap('product_details.json'));
 
       expect(product.id, 1);
       expect(product.title, 'Essence Mascara Lash Princess');
@@ -24,9 +22,7 @@ void main() {
     });
 
     test('computes the discounted price rounded to cents', () {
-      final product = ProductModel.fromJson(
-        fixtureMap('product_details.json'),
-      );
+      final product = ProductModel.fromJson(fixtureMap('product_details.json'));
       // 9.99 * (1 - 0.1048) = 8.943...
       expect(product.finalPrice, 8.94);
     });
@@ -44,7 +40,9 @@ void main() {
     });
 
     test('round-trips through toJson for the offline cache', () {
-      final original = ProductModel.fromJson(fixtureMap('product_details.json'));
+      final original = ProductModel.fromJson(
+        fixtureMap('product_details.json'),
+      );
       final copy = ProductModel.fromJson(original.toJson());
       expect(copy, original);
     });

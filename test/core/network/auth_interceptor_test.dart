@@ -74,10 +74,7 @@ void main() {
     await client.get('/auth/me', requiresAuth: true);
     await client.get('/products');
 
-    expect(
-      adapter.requests[0].headers['Authorization'],
-      'Bearer old-access',
-    );
+    expect(adapter.requests[0].headers['Authorization'], 'Bearer old-access');
     expect(adapter.requests[1].headers['Authorization'], isNull);
   });
 
@@ -100,25 +97,29 @@ void main() {
       '/auth/refresh',
       '/auth/me',
     ]);
-    verify(
-      () => tokens.saveTokens(accessToken: 'new', refreshToken: 'new-r'),
-    ).called(1);
+    verify(() => tokens.saveTokens(accessToken: 'new', refreshToken: 'new-r'))
+        .called(1);
   });
 
-  test('when refresh fails with 403 it clears tokens and expires the session',
-      () async {
-    final adapter = FakeAdapter(
-      (o) => o.path == '/auth/refresh'
-          ? json(403, {'message': 'Invalid refresh token'})
-          : json(401, {'message': 'Invalid/Expired Token!'}),
-    );
-    final expired = expectLater(session.onSessionExpired, emits(isA<String>()));
+  test(
+    'when refresh fails with 403 it clears tokens and expires the session',
+    () async {
+      final adapter = FakeAdapter(
+        (o) => o.path == '/auth/refresh'
+            ? json(403, {'message': 'Invalid refresh token'})
+            : json(401, {'message': 'Invalid/Expired Token!'}),
+      );
+      final expired = expectLater(
+        session.onSessionExpired,
+        emits(isA<String>()),
+      );
 
-    await expectLater(
-      clientWith(adapter).get('/auth/me', requiresAuth: true),
-      throwsA(isA<UnauthorizedException>()),
-    );
-    await expired;
-    verify(() => tokens.clear()).called(1);
-  });
+      await expectLater(
+        clientWith(adapter).get('/auth/me', requiresAuth: true),
+        throwsA(isA<UnauthorizedException>()),
+      );
+      await expired;
+      verify(() => tokens.clear()).called(1);
+    },
+  );
 }
