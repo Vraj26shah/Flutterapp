@@ -9,7 +9,7 @@ import 'package:shopsphere/features/products/domain/entities/product.dart';
 String productHeroTag(int id) => 'product-image-$id';
 
 /// Height of the text block below the image, before text scaling.
-const productCardInfoHeight = 112.0;
+const productCardInfoHeight = 128.0;
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
