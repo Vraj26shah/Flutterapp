@@ -114,36 +114,33 @@ class ProductCard extends StatelessWidget {
                         style: text.titleSmall?.copyWith(height: 1.25),
                       ),
                       const Spacer(),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
-                        children: [
-                          Flexible(
-                            child: Text(
+                      // Scale down (never truncate) long prices.
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
                               formatPrice(product.finalPrice),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
                               style: text.titleMedium?.copyWith(
                                 color: scheme.primary,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                          ),
-                          if (product.hasDiscount) ...[
-                            const SizedBox(width: Spacing.xs),
-                            Flexible(
-                              child: Text(
+                            if (product.hasDiscount) ...[
+                              const SizedBox(width: Spacing.xs),
+                              Text(
                                 formatPrice(product.price),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
                                 style: text.bodySmall?.copyWith(
                                   decoration: TextDecoration.lineThrough,
                                   color: scheme.onSurfaceVariant,
                                 ),
                               ),
-                            ),
+                            ],
                           ],
-                        ],
+                        ),
                       ),
                       const SizedBox(height: 2),
                       RatingStars(rating: product.rating, size: 14),
