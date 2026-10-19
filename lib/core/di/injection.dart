@@ -19,6 +19,9 @@ import 'package:shopsphere/features/cart/data/repositories/cart_repository_impl.
 import 'package:shopsphere/features/cart/domain/repositories/cart_repository.dart';
 import 'package:shopsphere/features/cart/domain/usecases/cart_usecases.dart';
 import 'package:shopsphere/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:shopsphere/features/diagnostics/data/diagnostics_repository_impl.dart';
+import 'package:shopsphere/features/diagnostics/domain/diagnostics.dart';
+import 'package:shopsphere/features/diagnostics/presentation/diagnostics_cubit.dart';
 import 'package:shopsphere/features/products/data/datasources/product_local_data_source.dart';
 import 'package:shopsphere/features/products/data/datasources/product_remote_data_source.dart';
 import 'package:shopsphere/features/products/data/repositories/product_repository_impl.dart';
@@ -97,6 +100,9 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton<ProfileRepository>(
       () => ProfileRepositoryImpl(sl()),
     )
+    ..registerLazySingleton<DiagnosticsRepository>(
+      () => DiagnosticsRepositoryImpl(client: sl(), tokens: sl()),
+    )
     // ---- Use cases
     ..registerLazySingleton(() => LoginUseCase(sl()))
     ..registerLazySingleton(() => CheckSessionUseCase(sl()))
@@ -109,6 +115,7 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton(() => SaveCartUseCase(sl()))
     ..registerLazySingleton(() => PlaceOrderUseCase(sl()))
     ..registerLazySingleton(() => GetProfileUseCase(sl()))
+    ..registerLazySingleton(() => RunScenarioUseCase(sl()))
     // ---- Blocs (app-wide singletons are created once in app.dart)
     ..registerFactory(
       () => AuthBloc(checkSession: sl(), logout: sl(), sessionManager: sl()),
@@ -124,5 +131,6 @@ Future<void> configureDependencies() async {
     )
     ..registerFactory(() => CategoriesCubit(sl()))
     ..registerFactory(() => ProductDetailsCubit(sl()))
-    ..registerFactory(() => ProfileCubit(sl()));
+    ..registerFactory(() => ProfileCubit(sl()))
+    ..registerFactory(() => DiagnosticsCubit(sl()));
 }

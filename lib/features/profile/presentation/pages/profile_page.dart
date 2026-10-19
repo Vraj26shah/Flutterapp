@@ -8,6 +8,7 @@ import 'package:shopsphere/core/widgets/shimmer_box.dart';
 import 'package:shopsphere/core/widgets/state_views.dart';
 import 'package:shopsphere/features/auth/domain/entities/user.dart';
 import 'package:shopsphere/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:shopsphere/features/diagnostics/presentation/diagnostics_page.dart';
 import 'package:shopsphere/features/profile/presentation/bloc/profile_cubit.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -178,6 +179,20 @@ class _ProfileContent extends StatelessWidget {
                               ),
                         ),
                       ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: Spacing.lg),
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.bug_report_outlined),
+                    title: const Text('Error-handling playground'),
+                    subtitle: const Text('Reproduce 500, 404, slow & expired'),
+                    trailing: const Icon(Icons.chevron_right_rounded),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const DiagnosticsPage(),
+                      ),
                     ),
                   ),
                 ),
