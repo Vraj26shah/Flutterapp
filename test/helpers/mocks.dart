@@ -1,4 +1,11 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shopsphere/core/network/connectivity_cubit.dart';
+import 'package:shopsphere/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:shopsphere/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:shopsphere/features/products/presentation/bloc/categories_cubit.dart';
+import 'package:shopsphere/features/products/presentation/bloc/product_list_bloc.dart';
+import 'package:shopsphere/features/profile/presentation/bloc/profile_cubit.dart';
 import 'package:shopsphere/core/network/api_client.dart';
 import 'package:shopsphere/core/storage/token_storage.dart';
 import 'package:shopsphere/features/auth/data/datasources/auth_remote_data_source.dart';
@@ -52,3 +59,19 @@ class MockLoadCartUseCase extends Mock implements LoadCartUseCase {}
 class MockSaveCartUseCase extends Mock implements SaveCartUseCase {}
 
 class MockPlaceOrderUseCase extends Mock implements PlaceOrderUseCase {}
+
+class MockProductListBloc extends MockBloc<ProductListEvent, ProductListState>
+    implements ProductListBloc {}
+
+class MockCategoriesCubit extends MockCubit<CategoriesState>
+    implements CategoriesCubit {}
+
+class MockConnectivityCubit extends MockCubit<bool>
+    implements ConnectivityCubit {}
+
+class MockCartBloc extends MockBloc<CartEvent, CartState> implements CartBloc {}
+
+class MockAuthBloc extends MockBloc<AuthEvent, AuthState> implements AuthBloc {}
+
+class MockProfileCubit extends MockCubit<ProfileState>
+    implements ProfileCubit {}
